@@ -1,4 +1,6 @@
-*.png
 *.csv
 *.[oa]
 *~
+.ipynb_checkpoints
+energy_complete.xlsx
+energy_complete1.xlsx
