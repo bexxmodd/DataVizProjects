@@ -5,6 +5,10 @@ import pandas as pd
 # I'll run data prep script first
 exec(open("moviesprep.py").read())
 
+# Converting budget and revenue values in 100s of millions
+movies_updated['budget'] = movies_updated['budget'] / 1000000
+movies_updated['revenue'] = movies_updated['revenue'] / 1000000
+
 # Now, let's start examining visually
 """
 Here I will prepare the scatter and bar plot side by side
@@ -56,8 +60,8 @@ ax[0].spines['right'].set_visible(False)
 ax[0].tick_params(color='grey', labelcolor='w')
 for spine in ax[0].spines.values():
         spine.set_edgecolor('whitesmoke')
-ax[0].set_xlabel('Movie Budget', c='w', fontsize=14)
-ax[0].set_ylabel('Movie Revenue', c='w', fontsize=14)
+ax[0].set_xlabel('Movie Budget Hundred Millions US$', c='w', fontsize=14)
+ax[0].set_ylabel('Movie Revenue Hundred Millions US$', c='w', fontsize=14)
 
 rects1 = ax[1].bar(x - width/2, women, width, label='Females', color='w', alpha=.5)
 rects2 = ax[1].bar(x + width/2, men, width, label='Males', color='cyan', alpha=.3)
@@ -86,27 +90,62 @@ def autolabel(rects):
         
 autolabel(rects1)
 autolabel(rects2)
+
+fig, ax = plt.subplots(1, 2, figsize=(18,9))
+fig.patch.set_facecolor('slategrey')
+ax[0].set_facecolor('slategrey')
+ax[1].set_facecolor('slategrey')
+
+ax[0].hist(females.budget, 20, color='w', alpha=.50)
+ax[0].hist(males.budget, 20, color='cyan', alpha=.2)
+ax[0].set_xlabel('Movie Budget Hundred Millions US$', c='w', fontsize=14)
+ax[0].set_ylabel('Number of Movies', c='w', fontsize=14)
+ax[0].set_xlim(left=0)
+ax[0].tick_params(color='grey', labelcolor='w')
+for spine in ax[0].spines.values():
+        spine.set_edgecolor('whitesmoke')
+ax[0].spines['top'].set_visible(False)
+ax[0].spines['right'].set_visible(False)
+    
+
+ax[1].scatter(females['vote_count'], females['vote_average'], c='w', s=100, alpha=.50)
+ax[1].scatter(males['vote_count'], males['vote_average'], c='cyan', s=80, alpha=.2)
+ax[1].set_xlim(left=0)
+ax[1].set_ylim(bottom=0)
+legend = ax[0].legend(labels=('Female', 'Male'), loc='upper right',
+             fontsize=14, frameon=None, framealpha=.2)
+plt.setp(legend.get_texts(), color='w')
+ax[1].spines['top'].set_visible(False)
+ax[1].spines['right'].set_visible(False)
+ax[1].tick_params(color='grey', labelcolor='w')
+for spine in ax[1].spines.values():
+        spine.set_edgecolor('whitesmoke')
+ax[1].set_xlabel('Number Of Reviews', c='w', fontsize=14)
+ax[1].set_ylabel('Average Rating', c='w', fontsize=14)
+
 plt.show()
+
+
 
 
 # I plot the boxplot for main variables to see the
 # distribution and what can be potential outliers
-fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, figsize=(12, 8))
-figsize=(20, 6)
+# fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, figsize=(12, 8))
+# figsize=(20, 6)
 
-ax1.boxplot(movies_updated['budget_log'].values)
-ax1.set_title('Log of Budget')
-ax2.boxplot(movies_updated['budget'].values)
-ax2.set_title('Budget')
-ax3.boxplot(movies_updated['popularity'].values)
-ax3.set_title('Popularity')
-ax4.boxplot(movies_updated['runtime'].values)
-ax4.set_title('Runtime in minutes')
-ax5.boxplot(movies_updated['vote_average'].values)
-ax5.set_title('Average Vote')
-ax6.boxplot(movies_updated['vote_count'].values)
-ax6.set_title('Total Votes')
-plt.show()
+# ax1.boxplot(movies_updated['budget_log'].values)
+# ax1.set_title('Log of Budget')
+# ax2.boxplot(movies_updated['budget'].values)
+# ax2.set_title('Budget')
+# ax3.boxplot(movies_updated['popularity'].values)
+# ax3.set_title('Popularity')
+# ax4.boxplot(movies_updated['runtime'].values)
+# ax4.set_title('Runtime in minutes')
+# ax5.boxplot(movies_updated['vote_average'].values)
+# ax5.set_title('Average Vote')
+# ax6.boxplot(movies_updated['vote_count'].values)
+# ax6.set_title('Total Votes')
+# plt.show()
 
 
 
